@@ -155,7 +155,7 @@ dependencies {
 ### Files Configured
 
 1. **`jitpack.yml`** - JitPack build configuration
-   - JDK 17 for building
+   - JDK 21 for building (required by timber-lint module)
    - Skips tests and lint for faster builds
    - Publishes to Maven local
 
