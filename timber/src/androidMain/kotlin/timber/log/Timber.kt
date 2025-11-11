@@ -378,7 +378,7 @@ actual class Timber actual private constructor() {
       treeArray.forEach { it.log(priority, t) }
     }
 
-    override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
+    actual override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
       throw AssertionError() // Missing override for log method.
     }
 

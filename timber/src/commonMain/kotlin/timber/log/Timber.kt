@@ -107,5 +107,8 @@ expect class Timber private constructor() {
     fun forest(): List<Tree>
 
     val treeCount: Int
+
+    /** Implementation required by Tree abstract class. Should not be called directly. */
+    override fun log(priority: Int, tag: String?, message: String, t: Throwable?)
   }
 }

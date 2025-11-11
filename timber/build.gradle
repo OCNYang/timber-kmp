@@ -19,8 +19,23 @@ kotlin {
     }
   }
 
-  // TODO Remove!
-  jvmToolchain(17)
+  // iOS targets
+  iosX64()
+  iosArm64()
+  iosSimulatorArm64()
+
+  // JVM target
+  jvm {
+    compilations.all {
+      kotlinOptions.jvmTarget = "1.8"
+    }
+  }
+
+  // JS targets
+  js(IR) {
+    browser()
+    nodejs()
+  }
 
   sourceSets {
     commonMain {
@@ -52,4 +67,16 @@ tasks.named('check') { check ->
 
 dependencies {
   lintPublish project(':timber-lint')
+}
+
+// JitPack Publishing Configuration
+// Ensure all KMP targets can be built and published
+afterEvaluate {
+  publishing {
+    repositories {
+      maven {
+        url = uri("${buildDir}/repo")
+      }
+    }
+  }
 }
