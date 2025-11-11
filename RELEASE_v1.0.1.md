@@ -1,112 +1,37 @@
-# 🔧 JitPack 构建失败 - 已修复
+# 🚀 快速发布 v1.0.1 指南
 
-## ❌ 原问题
-
-JitPack 构建失败，错误信息：
-```
-Cannot find a Java installation matching: {languageVersion=21}
-```
-
-**原因**: `timber-lint` 模块需要 Java 21，但 `jitpack.yml` 配置的是 Java 17。
-
-## ✅ 已修复
-
-### 修改的文件
-
-1. **`jitpack.yml`** - 更新 Java 版本
-   ```yaml
-   jdk:
-     - openjdk21  # 从 openjdk17 改为 openjdk21
-
-   before_install:
-     - sdk install java 21.0.1-tem || true  # 从 17.0.8 改为 21.0.1
-     - sdk use java 21.0.1-tem
-   ```
-
-2. **`JITPACK_GUIDE.md`** - 更新文档说明 JDK 21 要求
-
-### 本地验证
-
-✅ 构建成功:
-```bash
-./gradlew clean :timber:publishToMavenLocal -x test -x lint
-BUILD SUCCESSFUL in 7s
-```
-
-## 🚀 解决方案：创建新版本 v1.0.1
-
-**重要**: JitPack 不支持对同一个 tag 重新构建。即使删除 Release 和 tag，JitPack 也会缓存之前的构建结果。
-
-**解决方案**: 创建新版本 `v1.0.1` 包含 Java 21 修复。
-
-### 步骤 1: 提交修复并推送
+## ⚡ 快速执行 (复制粘贴即可)
 
 ```bash
 cd /Users/lucas/AIChatProject/timber-kmp
 
+# 1. 提交修复
 git add jitpack.yml JITPACK_GUIDE.md JITPACK_FIX.md
 git commit -m "fix: Update JitPack to use Java 21 for timber-lint compatibility
 
 - Update jitpack.yml from Java 17 to Java 21
 - timber-lint module requires Java 21 (jvmToolchain)
-- Fixes JitPack build failure
-
-Fixes #1"
+- Fixes JitPack build failure"
 
 git push origin main
-```
 
-### 步骤 2: 创建新 Tag
-
-```bash
-# 创建 v1.0.1 tag
+# 2. 创建并推送 tag
 git tag -a v1.0.1 -m "v1.0.1 - Fix JitPack build with Java 21"
-
-# 推送 tag
 git push origin v1.0.1
 ```
 
-### 步骤 3: 在 GitHub 创建 Release
+## 📝 GitHub Release 步骤
 
-1. 访问: https://github.com/ocnyang/timber-kmp/releases
-2. 点击 **"Create a new release"**
-3. 填写信息:
-   - **Tag**: `v1.0.1` (选择刚创建的 tag)
-   - **Title**: `Timber KMP v1.0.1 - JitPack Build Fix`
-   - **Description**: (见下方模板)
-4. 点击 **"Publish release"**
+1. **访问**: https://github.com/ocnyang/timber-kmp/releases/new
 
-### 步骤 4: 触发 JitPack 构建
+2. **选择 tag**: `v1.0.1`
 
-1. 访问: https://jitpack.io/#ocnyang/timber-kmp
-2. 在输入框输入 `v1.0.1`
-3. 点击 **"Get it"** 或 **"Look up"**
-4. 等待 5-10 分钟让 JitPack 构建
-5. 确认状态变为绿色 ✅
+3. **Release title**: `Timber KMP v1.0.1 - JitPack Build Fix`
 
-### 步骤 5: 验证发布
+4. **复制以下内容到 Description**:
 
-测试新版本:
+---
 
-```kotlin
-// settings.gradle.kts
-dependencyResolutionManagement {
-    repositories {
-        google()
-        mavenCentral()
-        maven("https://jitpack.io")
-    }
-}
-
-// 使用新版本
-dependencies {
-    implementation("com.github.ocnyang:timber-kmp:v1.0.1")
-}
-```
-
-## 📝 v1.0.1 Release 描述模板
-
-```markdown
 🌲 Timber KMP v1.0.1 - JitPack Build Fix
 
 ## 🐛 Bug Fix
@@ -138,7 +63,7 @@ Timber now supports **all major Kotlin Multiplatform targets**!
 
 Add JitPack repository to your `settings.gradle.kts`:
 
-\```kotlin
+```kotlin
 dependencyResolutionManagement {
     repositories {
         google()
@@ -146,11 +71,11 @@ dependencyResolutionManagement {
         maven("https://jitpack.io")
     }
 }
-\```
+```
 
 Then add Timber KMP dependency:
 
-\```kotlin
+```kotlin
 // In your shared module
 kotlin {
     sourceSets {
@@ -161,53 +86,53 @@ kotlin {
         }
     }
 }
-\```
+```
 
 ## 🚀 Quick Examples
 
 **Android**:
-\```kotlin
+```kotlin
 Timber.plant(Timber.DebugTree())
 Timber.d("Hello, Timber!")
-\```
+```
 
 **iOS (Swift)**:
-\```swift
+```swift
 Timber.companion.plant(tree: Timber.DebugTree())
 Timber.companion.d("Hello from iOS!")
-\```
+```
 
 **JVM**:
-\```kotlin
+```kotlin
 Timber.plant(Timber.DebugTree(useJavaLogging = true))
 Timber.d("Hello from JVM!")
-\```
+```
 
 **JavaScript**:
-\```javascript
+```javascript
 timber.Timber.companion.plant(new timber.Timber.DebugTree());
 timber.Timber.companion.d("Hello from JS!");
-\```
+```
 
 ## 📝 Platform Output Examples
 
 **iOS**:
-\```
+```
 14:23:15.123 💚 D/MyClass: User logged in
 14:23:15.456 💙 I/Network: Request successful
-\```
+```
 
 **JVM**:
-\```
+```
 14:23:15.123 [D] MyClass: User logged in
 14:23:15.456 [I] Network: Request successful
-\```
+```
 
 **JS (Browser)**:
-\```
+```
 [DEBUG] MyClass: User logged in
 [INFO] Network: Request successful
-\```
+```
 
 ## 📚 Documentation
 - [README.md](README.md) - Main documentation
@@ -230,28 +155,25 @@ timber.Timber.companion.d("Hello from JS!");
 **Total Platforms**: 7 targets
 **Total Code**: ~2,600 lines
 **Build Status**: ✅ All platforms successful
-```
-
-## ✅ 验证清单
-
-完成发布后请确认:
-
-- [ ] 代码已推送到 GitHub
-- [ ] Tag v1.0.1 已创建并推送
-- [ ] Release v1.0.1 已在 GitHub 上创建
-- [ ] JitPack 构建成功 (https://jitpack.io/#ocnyang/timber-kmp)
-- [ ] 构建日志无错误
-- [ ] 所有平台 artifact 都已发布
-
-## 🔗 有用链接
-
-- **GitHub Releases**: https://github.com/ocnyang/timber-kmp/releases
-- **JitPack Status**: https://jitpack.io/#ocnyang/timber-kmp
-- **v1.0.1 Build Log**: https://jitpack.io/com/github/ocnyang/timber-kmp/v1.0.1/build.log
 
 ---
 
-**修复状态**: ✅ 已完成
-**本地测试**: ✅ BUILD SUCCESSFUL
-**下一步**: 创建 v1.0.1 Release
+5. **点击**: "Publish release"
 
+## ⏰ 等待 JitPack 构建
+
+1. 访问: https://jitpack.io/#ocnyang/timber-kmp
+2. 在输入框输入 `v1.0.1` 并按回车
+3. 等待 5-10 分钟
+4. 刷新页面，确认看到绿色 ✅
+
+## ✅ 验证
+
+访问构建日志确认成功:
+https://jitpack.io/com/github/ocnyang/timber-kmp/v1.0.1/build.log
+
+看到 `BUILD SUCCESSFUL` 就完成了！
+
+---
+
+**问题？** 查看详细说明: `JITPACK_FIX.md`
